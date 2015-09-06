@@ -2,7 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8 FATAL_ERROR)
 CMAKE_POLICY(VERSION 2.8)
 
 IF(LUAROCKS_PREFIX)
-  MESSAGE(STATUS "Installing Unsup through Luarocks")
+  MESSAGE(STATUS "Installing Unsupgpu through Luarocks")
   STRING(REGEX REPLACE "(.*)lib/luarocks/rocks.*" "\\1" CMAKE_INSTALL_PREFIX  "${LUAROCKS_PREFIX}")
   MESSAGE(STATUS "Prefix inferred from Luarocks: ${CMAKE_INSTALL_PREFIX}")
 ENDIF()
