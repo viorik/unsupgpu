@@ -6,7 +6,7 @@
 #define unsupgpu_(NAME) TH_CONCAT_3(unsupgpu_, Real, NAME)
 #define torch_string_(NAME) TH_CONCAT_STRING_3(torch., Real, NAME)
 
-#include "generic/util.h"
+#include "util.h"
 #include "THGenerateFloatTypes.h"
 
 LUA_EXTERNC DLL_EXPORT int luaopen_libunsupgpu(lua_State *L);
