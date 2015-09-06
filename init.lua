@@ -1,7 +1,6 @@
-require 'nn'
-require 'optim'
-require 'cutorch'
-require 'libunsupgpu'
+require "nn"
+require "optim"
+require "libunsupgpu"
 
 -- extra modules
 include('unsupgpu', 'Diag.lua')
