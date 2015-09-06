@@ -2,12 +2,12 @@
 #include "util.h"
 
 
-struct shrinkage_ {
-  const double threshold_;
+struct shrinkage {
+  const float threshold_;
 
-  shrinkage_(double threshold): threshold_(threshold) {}
+  shrinkage(float threshold): threshold_(threshold) {}
 
-  __device__ __forceinline__ void operator()(double* x) {
+  __device__ __forceinline__ void operator()(float* x) {
     if (threshold_ == 0) *x = 1;
     if (*x > threshold_) *x -= threshold_;
     else if (*x < -threshold_) *x += threshold_;
@@ -15,15 +15,17 @@ struct shrinkage_ {
   }
 };
 
-static int unsupgpu_(shrinkage)(lua_State *L)
+static int unsupgpu_shrinkage(lua_State *L)
 {
   THCState *state = getCutorchState(L);
-  double threshold = luaT_getfieldchecknumber(L, 1, "threshold");
+  THCudaTensor *input = (THCudaTensor*)luaT_checkudata(L, 2, "torch.CudaTensor");
+  THCudaTensor *output = (THCudaTensor*)luaT_getfieldcheckudata(L, 1, "output", "torch.CudaTensor");
+  double threshold = luaT_getfieldchecknumber(L, 1, "lambda");
 
   THAssert(THCudaTensor_checkGPU(state, 2, input, output));
 
   THCudaTensor_pointwiseApply1(state, input,
-                               shrinkage_(threshold));
+                               shrinkage(threshold));
   THCudaTensor_set(state, output, input);
 
   THCudaCheck(cudaGetLastError());
@@ -31,15 +33,15 @@ static int unsupgpu_(shrinkage)(lua_State *L)
 }
 
 
-static const struct luaL_Reg unsupgpu_(shrinkage__) [] = {
-  {"shrinkage", unsupgpu_(shrinkage)},
+static const struct luaL_Reg unsupgpu_util__ [] = {
+  {"shrinkage", unsupgpu_shrinkage},
   {NULL, NULL}
 };
 
-void unsupgpu_shrinkage_init(lua_State *L)
+void unsupgpu_util_init(lua_State *L)
 {
   luaT_pushmetatable(L, "torch.CudaTensor");
-  luaT_registeratname(L, unsupgpu_shrinkage__);
+  luaT_registeratname(L, unsupgpu_util__, "nn");
   lua_pop(L,1);
 }
 

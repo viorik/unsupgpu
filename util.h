@@ -10,4 +10,6 @@ extern "C"
 
 THCState* getCutorchState(lua_State* L);
 
-void unsupgpu_shrinkage_init(lua_State *L);
+void unsupgpu_util_init(lua_State *L);
+
+#endif

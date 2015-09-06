@@ -10,6 +10,7 @@ ENDIF()
 FIND_PACKAGE(CUDA REQUIRED)
 LIST(APPEND CUDA_NVCC_FLAGS "-arch=sm_30")
 
+FIND_PACKAGE(Torch REQUIRED)
 INCLUDE_DIRECTORIES("${Torch_INSTALL_INCLUDE}/THC")
 LINK_DIRECTORIES("${Torch_INSTALL_LIB}")
 
@@ -21,9 +22,6 @@ TARGET_LINK_LIBRARIES(unsupgpu luaT THC TH)
 IF(LUALIB)
   TARGET_LINK_LIBRARIES(unsupgpu ${LUALIB})
 ENDIF()
-
-ADD_TORCH_PACKAGE(unsup "${src}"  "${luasrc}" "Unsupervised Learning")
-TARGET_LINK_LIBRARIES(unsup luaT TH)
 
 ### Torch packages supposes libraries prefix is "lib"
 SET_TARGET_PROPERTIES(unsupgpu PROPERTIES
