@@ -27,4 +27,4 @@ Build/Install:
   * Rebuild torch, it will include all these projects too.
 
 Alternatively, you can use torch's package manager. Once
-Torch is installed, you can install `unsup`: `$ torch-pkg install unsup`.
+Torch is installed, you can install `unsupgpu`: `$ torch-pkg install unsupgpu`.
