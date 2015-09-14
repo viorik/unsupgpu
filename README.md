@@ -11,6 +11,7 @@ Basic dependencies:
   * Torch7 (github.com/andresy/torch)
   * optim  (github.cim/koraykv/optim)
   * cutorch (https://github.com/torch/cutorch)
+
 To run the demo scripts, you also need the following:
 
   * image (github.com/clementfarabet/lua---image)
