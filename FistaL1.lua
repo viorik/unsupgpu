@@ -1,4 +1,4 @@
-local FistaL1, parent = torch.class('unsup.FistaL1','unsup.UnsupModule')
+local FistaL1, parent = torch.class('unsupgpu.FistaL1','unsupgpu.UnsupgpuModule')
 -- inputFeatures   : number of input features
 -- outputFeatures  : size of code (feature maps)
 -- kw              : width of convolutional kernel
@@ -43,9 +43,11 @@ function FistaL1:__init(freconstruction, creconstruction, lambda, params)
       local code = x
       local gradx = nil
       local input = self.input
-
+      --print ('Fista')
+      --print (code:size())
       -- forward function evaluation
       local reconstruction = self.D:updateOutput(code)
+      --print (reconstruction:size())
       local fval = self.Fcost:updateOutput(reconstruction, input)
       fval = fval * 0.5
 
@@ -73,7 +75,8 @@ function FistaL1:__init(freconstruction, creconstruction, lambda, params)
    -- Finally we need argmin_x Q(x,y)
    self.pl = function(x, L)
       local code = x
-      code:shrinkage(self.lambda/L)
+      --print (code:type())
+      code:shrinkagegpu(self.lambda/L)
    end
 
    -- this is for keeping parameters related to fista algorithm

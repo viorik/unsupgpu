@@ -19,6 +19,7 @@ LINK_DIRECTORIES("${Torch_INSTALL_LIB}")
 FILE(GLOB luasrc *.lua)
 FILE(GLOB src-cuda *.cu)
 CUDA_ADD_LIBRARY(unsupgpu MODULE ${src-cuda})
+ADD_TORCH_PACKAGE(unsupgpu "${src-cuda}" "${luasrc}" "Unsupervised Learning GPU")
 TARGET_LINK_LIBRARIES(unsupgpu luaT THC TH)
 
 IF(LUALIB)

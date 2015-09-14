@@ -1,4 +1,4 @@
-local PSD, parent = torch.class('unsup.PSD','unsup.UnsupModule')
+local PSD, parent = torch.class('unsupgpu.PSD','unsupgpu.UnsupgpuModule')
 
 -- encoder     : predictor module (something dervied from nn.Module generally)
 -- decoder     : decoding module (generally a linear or convolutional fista L1)

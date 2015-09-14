@@ -3,14 +3,14 @@ require "optim"
 require "libunsupgpu"
 
 -- extra modules
-include('unsupgpu', 'Diag.lua')
+torch.include('unsupgpu','Diag.lua')
 -- classes that implement algorithms
-include('unsupgpu', 'UnsupModule.lua')
-include('unsupgpu', 'FistaL1.lua')
-include('unsupgpu', 'SpatialConvFistaL1.lua')
-include('unsupgpu', 'psd.lua')
-include('unsupgpu', 'ConvPsd.lua')
-include('unsupgpu', 'UnsupTrainer.lua')
+torch.include('unsupgpu','UnsupgpuModule.lua')
+torch.include('unsupgpu','FistaL1.lua')
+torch.include('unsupgpu','SpatialConvFistaL1.lua')
+torch.include('unsupgpu','psd.lua')
+torch.include('unsupgpu','ConvPsd.lua')
+torch.include('unsupgpu','UnsupgpuTrainer.lua')
 
 local oldhessian = nn.hessian.enable
 function nn.hessian.enable()
@@ -36,3 +36,4 @@ function nn.hessian.enable()
 	   initDiagHessianParameters(self,{'gradWeight'},{'diagHessianWeight'})
 	end
 end
+
