@@ -14,21 +14,29 @@ end
 
 function Diag:updateOutput(input)
    self.output:resizeAs(input):copy(input)
-   if input:dim() > 1 then
-      for i=1,input:size(1) do
-	 self.output[{{i}}]:mul(self.weight[i])
+   if input:dim() == 4 then -- batch mode
+      for i=1,input:size(2) do
+	 self.output[{{},{i}}]:mul(self.weight[i])
       end
+   elseif input:dim() == 3 then -- no batch
+    for i=1,input:size(1) do
+      self.output[{{i}}]:mul(self.weight[i])
+    end
    else
-      self.output:cmul(self.weight)
+     self.output:cmul(self.weight)
    end
    return self.output
 end
 
 function Diag:updateGradInput(input, gradOutput)
    self.gradInput:resizeAs(gradOutput):copy(gradOutput)
-   if input:dim() > 1 then
+   if input:dim() == 4 then -- batch mode
+      for i=1,input:size(2) do
+	 self.gradInput[{{},{i}}]:mul(self.weight[i])
+      end
+   elseif input:dim() == 3 then
       for i=1,input:size(1) do
-	 self.gradInput[{{i}}]:mul(self.weight[i])
+         self.gradInput[{{i}}]:mul(self.weight[i])
       end
    else
       self.gradInput:cmul(self.weight)
@@ -37,8 +45,14 @@ function Diag:updateGradInput(input, gradOutput)
 end
 
 function Diag:accGradParameters(input, gradOutput, scale)
+  if input:dim() == 4 then -- batch mode
+   for i=1,input:size(2) do
+      self.gradWeight[i] = self.gradWeight[i] + scale*gradOutput[{{},{i}}]:dot(input[{{},{i}}])
+   end
+  elseif input:dim() == 3 then
    for i=1,input:size(1) do
       self.gradWeight[i] = self.gradWeight[i] + scale*gradOutput[{{i}}]:dot(input[{{i}}])
    end
+  end
 end
 

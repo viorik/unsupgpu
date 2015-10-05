@@ -8,7 +8,7 @@ local SpatialConvFistaL1, parent = torch.class('unsupgpu.SpatialConvFistaL1','un
 -- padh            : zero padding vertical
 -- lambda          : sparsity coefficient
 -- params          : optim.FistaLS parameters
-function SpatialConvFistaL1:__init(conntable, kw, kh, iw, ih, padw, padh, lambda, params)
+function SpatialConvFistaL1:__init(conntable, kw, kh, iw, ih, padw, padh, lambda, batchSize)
 
    -- parent.__init(self)
 
@@ -22,18 +22,29 @@ function SpatialConvFistaL1:__init(conntable, kw, kh, iw, ih, padw, padh, lambda
    -----------------------------------------
    -- L2 reconstruction cost with weighting
    -----------------------------------------
-   local tt = torch.Tensor(inputFeatures,ih,iw)
-   local utt= tt:unfold(2,kh,1):unfold(3,kw,1)
+   local batchSize = batchSize or 1
+   local tt, utt
+   if batchSize > 1 then 
+     tt = torch.Tensor(batchSize,inputFeatures,ih,iw)
+     utt= tt:unfold(3,kh,1):unfold(4,kw,1)
+   else
+     tt = torch.Tensor(inputFeatures,ih,iw)
+     utt= tt:unfold(2,kh,1):unfold(3,kw,1)
+   end
    tt:zero()
    utt:add(1)
    tt:div(tt:max())
    local Fcost = nn.WeightedMSECriterion(tt)
    Fcost.sizeAverage = false;
 
-   parent.__init(self,D,Fcost,lambda,params)
+   parent.__init(self,D,Fcost,lambda)
 
    -- this is going to be passed to optim.FistaLS
-   self.code:resize(outputFeatures, utt:size(2)+2*padw,utt:size(3)+2*padh)
+   if batchSize > 1 then
+     self.code:resize(batchSize, outputFeatures, utt:size(3)+2*padw,utt:size(4)+2*padh)
+   else
+     self.code:resize(outputFeatures, utt:size(2)+2*padw,utt:size(3)+2*padh)
+   end
    self.code:fill(0)
 end
 
