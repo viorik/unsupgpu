@@ -20,11 +20,11 @@ To run the demo scripts, you also need the following:
 
 Installation
 ------------
-I was able to install the package using the following procedure:
+The project is not yet uploaded to the global LuaRocks server so using "luarocks install unsupgpu" does not work yet. To install, you need to:
 
  * git clone https://github.com/viorik/unsupgpu
  * cd unsupgpu/
  * luarocks install unsupgpu-0.1-0.rockspec
 
-The project is not yet uploaded to the global LuaRocks server so using "luarocks install unsupgpu" does not work yet
+
 
