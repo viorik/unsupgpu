@@ -55,12 +55,12 @@ params = cmd:parse(arg)
 rundir = cmd:string('psd', params, {dir=true})
 params.rundir = params.dir .. '/' .. rundir
 
---if paths.dirp(params.rundir) then
---   os.execute('rm -r ' .. params.rundir)
---end
---os.execute('mkdir -p ' .. params.rundir)
+if paths.dirp(params.rundir) then
+   os.execute('rm -r ' .. params.rundir)
+end
+os.execute('mkdir -p ' .. params.rundir)
 cmd:addTime('psd')
---cmd:log(params.rundir .. '/log.txt', params)
+cmd:log(params.rundir .. '/log.txt', params)
 
 torch.setdefaulttensortype('torch.FloatTensor')
 
