@@ -20,12 +20,11 @@ To run the demo scripts, you also need the following:
 
 Installation
 ------------
+The project is not yet uploaded to the global LuaRocks server so using "luarocks install unsupgpu" does not work yet. To install, you need to:
 
-Build/Install:
+ * git clone https://github.com/viorik/unsupgpu
+ * cd unsupgpu/
+ * luarocks install unsupgpu-0.1-0.rockspec
 
-  * Install Torch7 (refer to its own documentation).
-  * clone all other repos (including this one) into dev directory of Torch7.
-  * Rebuild torch, it will include all these projects too.
 
-Alternatively, you can use torch's package manager. Once
-Torch is installed, you can install `unsupgpu`: `$ torch-pkg install unsupgpu`.
+
