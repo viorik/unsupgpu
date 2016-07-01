@@ -113,6 +113,8 @@ function FistaL1:updateOutput(input,icode)
    self.input = input
    -- init code to all zeros
    --self.code:fill(0)
+   print (#self.code)
+   print (#icode)
    self.code:copy(icode)
    -- do fista solution
    local oldL = self.params.L

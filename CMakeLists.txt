@@ -18,24 +18,27 @@ LINK_DIRECTORIES("${Torch_INSTALL_LIB}")
 
 FILE(GLOB luasrc *.lua)
 FILE(GLOB src-cuda *.cu)
-CUDA_ADD_LIBRARY(unsupgpu MODULE ${src-cuda})
-ADD_TORCH_PACKAGE(unsupgpu "${src-cuda}" "${luasrc}" "Unsupervised Learning GPU")
-TARGET_LINK_LIBRARIES(unsupgpu luaT THC TH)
+set(package unsupgpu)
+
+ADD_TORCH_PACKAGE(${package} "${src-cuda}" "${luasrc}" "Unsupervised Learning GPU")
+TARGET_LINK_LIBRARIES(${package} luaT THC TH)
 
 IF(LUALIB)
-  TARGET_LINK_LIBRARIES(unsupgpu ${LUALIB})
+  TARGET_LINK_LIBRARIES(${package} ${LUALIB})
 ENDIF()
 
-### Torch packages supposes libraries prefix is "lib"
-SET_TARGET_PROPERTIES(unsupgpu PROPERTIES
-  PREFIX "lib"
-  IMPORT_PREFIX "lib")
+if(src-cuda)
+  SET_TARGET_PROPERTIES(${package} PROPERTIES
+     PREFIX "lib"
+     IMPORT_PREFIX "lib"
+     INSTALL_NAME_DIR "@executable_path/${Torch_INSTALL_BIN2CPATH}")
 
-INSTALL(TARGETS unsupgpu
-  RUNTIME DESTINATION "${Torch_INSTALL_LUA_CPATH_SUBDIR}"
-  LIBRARY DESTINATION "${Torch_INSTALL_LUA_CPATH_SUBDIR}")
+  INSTALL(TARGETS ${package} 
+     RUNTIME DESTINATION ${Torch_INSTALL_LUA_CPATH_SUBDIR}
+     LIBRARY DESTINATION ${Torch_INSTALL_LUA_CPATH_SUBDIR})
+ENDIF(src-cuda)
 
-INSTALL(
-  FILES
-  ${luasrc}
-  DESTINATION "${Torch_INSTALL_LUA_PATH_SUBDIR}/unsupgpu")
+IF(luasrc)
+    INSTALL(FILES ${luasrc} 
+    DESTINATION ${Torch_INSTALL_LUA_PATH_SUBDIR}/${package})
+ENDIF(luasrc)

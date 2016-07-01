@@ -120,9 +120,6 @@ end
    -- PSD autoencoder
    module = unsupgpu.PSD(encoder, decoder, params.beta)
 
-   --module.encoder:cuda()
-   --module.decoder:cuda()
-   --module.predcost:cuda()
    module:cuda()
    -- convert dataset to convolutional (returns 1xKxK tensors (3D), instead of K*K (1D))
    dataset:conv()
@@ -178,7 +175,7 @@ for t = 1,params.maxiter,params.batchsize do
           local input = ex[1]
           local target = ex[2]
           inputs[{i-ih+1,{},{},{}}] = input
-          targets[{i-ih+1,{},{},{}}] = target
+          targets[{i-ih+1,{},{},{}}] = target--[{{},{5,21},{5,21}}]
         end
    
         local inputs_ = inputs:cuda()

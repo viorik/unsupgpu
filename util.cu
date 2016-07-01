@@ -35,7 +35,7 @@ static int unsupgpu_shrinkagegpu(lua_State *L)
 
   //THAssert(THCudaTensor_checkGPU(state, 2, input, output));
 
-  THCudaTensor_pointwiseApply1(state, input,
+  THC_pointwiseApply1(state, input,
                                shrinkagegpu(lambda));
   //THCudaTensor_set(state, output, input);
   
